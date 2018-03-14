@@ -9000,3 +9000,54 @@ const issues = [
     "url": "https://api.github.com/repos/learn-co-curriculum/js-donut-lab/issues/2"
   }
 ];
+
+let issuesWithUpdatedApiUrl = issues.map(function(issue) {
+  let toReplace = /(api.github.com)/
+  return Object.assign({}, issue, {
+    url: issue.url.replace(toReplace, 'api-v2.github.com')
+  })
+});
+
+let commentCountAcrossIssues = issues
+  .map(issue => issue.comments_count)
+  .reduce((commentCount, initial) => commentCount + initial);
+
+
+// let openIssues = issues.filter(issue => issue.state === "open");
+//without using filter since the lab is about reduce
+let openIssues = issues.reduce((openIssue, issue) => {
+  if(issue.state === "open") {
+    return [...openIssue, issue];
+  }
+  return openIssue;
+}, []);
+
+let nonAutomaticIssues = issues.reduce((nonAutoIssue, issue) =>{
+  if(!issue.body.includes("learn.co")) {
+    return [...nonAutoIssue, issue]
+  }
+  return nonAutoIssue;
+}, []);
+
+console.time("withoutMap time")
+for (var i = 0; i < nonAutomaticIssues.length; i++) {
+  var tbody = document.getElementById("results");
+  var tr = "<tr>";
+  tr += "<td>" + nonAutomaticIssues[i].body + "</td>" + "<td>" + nonAutomaticIssues[i].created_at + "</td>" + "<td>" + nonAutomaticIssues[i].state + "</td></tr>";
+
+  tbody.innerHTML += tr;
+}
+console.timeEnd("withoutMap time")
+
+
+// console.time("withMap time")
+// var tbody = document.getElementById('results');
+// tbody.innerHTML = nonAutomaticIssues
+//   .map(issue => `<tr>
+//     <td>${issue.body}</td>
+//     <td>${issue.created_at}</td>
+//     <td>${issue.state}</td>
+//     </tr>`
+//   )
+//   .join('');
+//   console.timeEnd("withMap time")
