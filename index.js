@@ -9029,20 +9029,20 @@ let nonAutomaticIssues = issues.reduce((nonAutoIssue, issue) =>{
   return nonAutoIssue;
 }, []);
 
-console.time("withoutMap time")
-for (var i = 0; i < nonAutomaticIssues.length; i++) {
-  var tbody = document.getElementById("results");
-  var tr = "<tr>";
-  tr += "<td>" + nonAutomaticIssues[i].body + "</td>" + "<td>" + nonAutomaticIssues[i].created_at + "</td>" + "<td>" + nonAutomaticIssues[i].state + "</td></tr>";
+// console.time("withoutMap time")
+// for (var i = 0; i < nonAutomaticIssues.length; i++) {
+//   var tbody = document.getElementById("results");
+//   var tr = "<tr>";
+//   tr += "<td>" + nonAutomaticIssues[i].body + "</td>" + "<td>" + nonAutomaticIssues[i].created_at + "</td>" + "<td>" + nonAutomaticIssues[i].state + "</td></tr>";
+//
+//   tbody.innerHTML += tr;
+// }
+// console.timeEnd("withoutMap time")
 
-  tbody.innerHTML += tr;
-}
-console.timeEnd("withoutMap time")
-
-
+//using map method which is faster and passes the test
 // console.time("withMap time")
-// var tbody = document.getElementById('results');
-// tbody.innerHTML = nonAutomaticIssues
+// var issueTable = document.getElementById("results");
+// issueTable.innerHTML = nonAutomaticIssues
 //   .map(issue => `<tr>
 //     <td>${issue.body}</td>
 //     <td>${issue.created_at}</td>
@@ -9050,4 +9050,16 @@ console.timeEnd("withoutMap time")
 //     </tr>`
 //   )
 //   .join('');
-//   console.timeEnd("withMap time")
+// console.timeEnd("withMap time")
+
+//using interpolation instead
+console.time("withoutMap time")
+for (var i = 0; i < nonAutomaticIssues.length; i++) {
+  var tbody = document.getElementById("results");
+  var tr = "<tr>";
+  // tr += "<td>" + nonAutomaticIssues[i].body + "</td>" + "<td>" + nonAutomaticIssues[i].created_at + "</td>" + "<td>" + nonAutomaticIssues[i].state + "</td></tr>";
+    tr += `<td>${nonAutomaticIssues[i].body}</td><td>${nonAutomaticIssues[i].created_at}</td><td>${nonAutomaticIssues[i].state}</td></tr>`;
+
+  tbody.innerHTML += tr;
+}
+console.timeEnd("withoutMap time")
